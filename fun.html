@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CẢNH BÁO: MÁY BẠN ĐÃ BỊ NHIỄM VIRUS!</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #ff0000;
+            font-family: 'Chiller', cursive;
+            text-align: center;
+            overflow: hidden;
+            margin: 0;
+            cursor: none;
+        }
+        h1 {
+            font-size: 4em;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+            animation: flicker 0.4s infinite;
+            margin-top: 150px; /* Dịch xuống để không đè lên đầu người */
+        }
+        .warning {
+            font-size: 1.5em;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+            margin: 20px;
+        }
+        .head {
+            width: 200px;
+            position: fixed;
+            top: 10px; /* Đặt đầu người ở trên cùng */
+            left: 50%;
+            transform: translateX(-50%); /* Căn giữa ngang */
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .stab {
+            position: absolute;
+            width: 100px;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-shadow: 0 0 5px #000;
+        }
+        button:hover {
+            background-color: #00ff00;
+            color: #000;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+            animation: flicker 0.3s infinite;
+        }
+        .fake-cursor {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: url('https://media.giphy.com/media/3o7TKqoaK2Xz1eZ7Yk/giphy.gif') no-repeat center;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .counter {
+            font-size: 2em;
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+            position: fixed;
+            top: 220px; /* Đặt bộ đếm bên dưới đầu người */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <img class="head" id="head" src="https://media.giphy.com/media/3o7TKqoaK2Xz1eZ7Yk/giphy.gif" alt="Đầu người kinh dị">
+    <div class="counter" id="clickCounter">Nhấn vào đầu người 10 lần để thoát: 0/10</div>
+    <h1>CẢNH BÁO: MÁY BẠN ĐÃ BỊ NHIỄM VIRUS!</h1>
+    <p class="warning">Hệ thống của bạn đã bị HACK! NHẤN VÀO ĐẦU NGƯỜI 10 LẦN ĐỂ THOÁT, NHƯNG CẨN THẬN!!!</p>
+    <button onclick="trollVirus()">SỬA MÁY NGAY!</button>
+
+    <audio id="scarySound" loop>
+        <source src="https://www.myinstants.com/media/sounds/scary-ambience.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="evilLaugh">
+        <source src="https://www.myinstants.com/media/sounds/evil-laugh.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let clickCount = 0;
+        const maxClicks = 10;
+        const head = document.getElementById("head");
+        const counter = document.getElementById("clickCounter");
+        const evilLaugh = document.getElementById("evilLaugh");
+
+        // Phát âm thanh kinh dị nền
+        window.onload = function() {
+            let audio = document.getElementById("scarySound");
+            audio.play().catch(function() {
+                console.log("Âm thanh bị chặn, cần tương tác để phát.");
+            });
+        };
+
+        // Xử lý nhấn vào đầu người
+        head.addEventListener("click", function(e) {
+            clickCount++;
+            counter.textContent = `Nhấn vào đầu người 10 lần để thoát: ${clickCount}/10`;
+
+            // Phát tiếng cười ma quái
+            evilLaugh.play().catch(function() {});
+
+            // Hiệu ứng dao đâm
+            let stab = document.createElement("img");
+            stab.src = "https://media.giphy.com/media/l0Iyl55kTeh71nTWw/giphy.gif"; // Hình máu bắn
+            stab.className = "stab";
+            stab.style.left = e.pageX - 50 + "px";
+            stab.style.top = e.pageY - 50 + "px";
+            document.body.appendChild(stab);
+            setTimeout(() => stab.remove(), 1000);
+
+            // Nếu đủ 10 lần, cho phép thoát
+            if (clickCount >= maxClicks) {
+                alert("ĐƯỢC RỒI! BẠN ĐÃ THOÁT KHỎI VIRUS... HAY CHƯA?! 😈");
+                window.onbeforeunload = null; // Gỡ chặn thoát
+            }
+        });
+
+        // Hàm troll với thông báo virus
+        function trollVirus() {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    alert("LỖI KRITIKAL: Virus đã khóa hệ thống! 😈 NHẤN VÀO ĐẦU NGƯỜI ĐỂ THOÁT!");
+                }, i * 800);
+            }
+            // Hình kinh dị bất ngờ
+            setTimeout(() => {
+                let scareImage = document.createElement("img");
+                scareImage.src = "https://media.giphy.com/media/3o7TKqoaK2Xz1eZ7Yk/giphy.gif";
+                scareImage.style.position = "fixed";
+                scareImage.style.top = "50%";
+                scareImage.style.left = "50%";
+                scareImage.style.transform = "translate(-50%, -50%)";
+                scareImage.style.width = "600px";
+                document.body.appendChild(scareImage);
+                evilLaugh.play().catch(function() {});
+                setTimeout(() => scareImage.remove(), 1500);
+            }, 4000);
+        }
+
+        // Làm khó thoát trang
+        let escapeAttempts = 0;
+        window.onbeforeunload = function() {
+            escapeAttempts++;
+            evilLaugh.play().catch(function() {});
+            if (clickCount < maxClicks) {
+                return `PHẢI NHẤN VÀO ĐẦU NGƯỜI ${maxClicks - clickCount} LẦN NỮA ĐỂ THOÁT! LẦN THỬ: ${escapeAttempts}`;
+            }
+        };
+
+        // Giả mạo con trỏ chuột
+        document.addEventListener("mousemove", function(e) {
+            let fakeCursor = document.createElement("div");
+            fakeCursor.className = "fake-cursor";
+            fakeCursor.style.left = e.pageX + "px";
+            fakeCursor.style.top = e.pageY + "px";
+            document.body.appendChild(fakeCursor);
+            setTimeout(() => fakeCursor.remove(), 1000);
+
+            // Tạo "giọt máu" kinh dị
+            let bloodDrop = document.createElement("div");
+            bloodDrop.style.position = "absolute";
+            bloodDrop.style.width = "20px";
+            bloodDrop.style.height = "20px";
+            bloodDrop.style.background = "red";
+            bloodDrop.style.borderRadius = "50%";
+            bloodDrop.style.left = e.pageX + "px";
+            bloodDrop.style.top = e.pageY + "px";
+            bloodDrop.style.opacity = "0.5";
+            document.body.appendChild(bloodDrop);
+            setTimeout(() => bloodDrop.remove(), 1000);
+        });
+
+        // Chặn phím tắt
+        document.addEventListener("keydown", function(e) {
+            if (e.ctrlKey || e.altKey || e.key === "Escape") {
+                e.preventDefault();
+                alert("PHÍM TẮT BỊ KHÓA! VIRUS ĐANG KIỂM SOÁT! 😈 NHẤN VÀO ĐẦU NGƯỜI!");
+                evilLaugh.play().catch(function() {});
+            }
+        });
+
+        // Chặn chuột phải
+        document.addEventListener("contextmenu", function(e) {
+            e.preventDefault();
+            alert("CHUỘT PHẢI VÔ HIỆU HÓA! NHẤN VÀO ĐẦU NGƯỜI ĐỂ THOÁT!");
+            evilLaugh.play().catch(function() {});
+        });
+    </script>
+</body>
+</html>
